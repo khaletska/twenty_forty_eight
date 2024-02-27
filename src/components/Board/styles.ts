@@ -3,11 +3,14 @@ import Colors from '../../common/Colors';
 
 export default StyleSheet.create({
     board: {
+        borderTopWidth: 10,
+        borderLeftWidth: 10,
+        borderColor: Colors.accent,
         width: '100%',
         aspectRatio: 1,
         backgroundColor: Colors.primary,
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
     },
     row: {
         height: '25%',
@@ -35,6 +38,11 @@ export default StyleSheet.create({
     },
     winText: {
         fontSize: 40,
+        color: Colors.text_dark,
+        fontWeight: '700',
+    },
+    gameOverText: {
+        fontSize: 60,
         color: Colors.text_dark,
         fontWeight: '700',
     }

@@ -18,17 +18,11 @@ const Board: React.FC<BoardProps> = ({ matrix, isEndGame, isWin }) => {
     const getBorder = (rowIndex: number, colIndex: number) => {
         const border = {
             borderWidth: 10,
-            borderTopWidth: 10,
+            borderLeftWidth: 0,
+            borderTopWidth: 0,
             borderBottomWidth: 10,
             borderRightWidth: 10,
-            borderLeftWidth: 10
         };
-        if (rowIndex !== 0) {
-            border.borderTopWidth = 0;
-        }
-        if (colIndex !== 0) {
-            border.borderLeftWidth = 0;
-        }
 
         return border;
     }
@@ -51,8 +45,8 @@ return (
         {
             isEndGame &&
             <View style={styles.overScreen}>
-                <Text>
-                    Game over bitch
+                <Text style={styles.gameOverText}>
+                    Game Over!
                 </Text>
             </View>
         }

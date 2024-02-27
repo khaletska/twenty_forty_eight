@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, PanResponderGestureState } from 'react-native';
 import commonStyles from '../../common/styles';
 import styles from "./styles";
-import Board from "../../components/Board/Board";
+import Board from "../Board/Board";
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-import Button from "../../components/Button/Button";
+import Button from "../Button/Button";
 
 const arraysEqual = (a: number[][], b: number[][]) => {
     return a.every((row, rowIndex) => row.every((cell, colIndex) => cell === b[rowIndex][colIndex]));
@@ -12,6 +12,7 @@ const arraysEqual = (a: number[][], b: number[][]) => {
 
 const Game = () => {
     const [board, setBoard] = useState<number[][]>([[0, 2, 0, 2], [0, 0, 0, 2], [0, 0, 0, 0], [0, 0, 0, 0]])
+    const [score, setScore] = useState<number>(0)
     const [isEndGame, setEndGame] = useState<boolean>(false)
     const [isWin, setWin] = useState<boolean>(false)
 
@@ -79,11 +80,15 @@ const Game = () => {
     }
 
     const swipeLeft = (oldBoard: number[][]) => {
+        let newScore = 0;
+
         const newBoard = oldBoard.map((row: number[]) => {
             const filteredRow = row.filter((cell: number) => cell !== 0)
 
             for (let i = 0; i < filteredRow.length - 1; i++) {
                 if (filteredRow[i] === filteredRow[i + 1]) {
+                    newScore += filteredRow[i] * 2;
+
                     filteredRow[i] *= 2
                     filteredRow[i + 1] = 0
                 }
@@ -94,8 +99,9 @@ const Game = () => {
             const newRow = [...mergedRow, ...Array(oldBoard.length - mergedRow.length).fill(0)]
             return newRow
         })
+        setScore(score + newScore);
 
-        return newBoard
+        return newBoard;
     }
 
     const swipeRight = () => {
@@ -139,7 +145,7 @@ const Game = () => {
                 newBoard = board;
                 break;
         }
-        
+
         if (!arraysEqual(newBoard, board)) {
             let newTiles = addRandomTile(newBoard)
             setBoard(newTiles);
@@ -159,7 +165,19 @@ const Game = () => {
         >
             <View style={styles.header}>
                 <Text style={styles.title}>2048</Text>
-                <Button title="Start Game" onPress={startGame} />
+                <View style={styles.scores}>
+                    <View style={styles.plate}>
+                        <Text style={styles.plateText}>Score</Text>
+                        <Text style={styles.plateNum}>{score}</Text>
+                    </View>
+                    <View style={styles.plate}>
+                        <Text style={styles.plateText}>High Score</Text>
+                        <Text style={styles.plateNum}>{score}</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.iconsContainer}>
+                <Button title="Restart" onPress={startGame} />
             </View>
             <View style={commonStyles.container} >
                 <View style={styles.boardContainer}>
